@@ -20,7 +20,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/v1/user", "/login/oauth2/code/**", "/api/v1/user/login", "/swagger-ui/**", "/v3/**").permitAll()
                         .anyRequest().authenticated()
-                ).oauth2Login(auth -> auth.defaultSuccessUrl("http://localhost:3000/", true))
+                ).oauth2Login(auth -> auth.defaultSuccessUrl("http://localhost:3000/project", true))
                 .build();
     }
 }

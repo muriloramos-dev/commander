@@ -39,7 +39,7 @@ public class IKeyCloak {
         this.keycloak = keycloak;
     }
 
-    public void createUser (UserCreateDTO dto) {
+    public UserRepresentation createUser (UserCreateDTO dto) {
         UserRepresentation user = new UserRepresentation();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
@@ -51,5 +51,6 @@ public class IKeyCloak {
         user.setClientRoles(clientRoles);
         user.setRequiredActions(List.of("CONFIGURE_TOTP"));
         keycloak.realm(realm).users().create(user);
+        return user;
     }
 }
