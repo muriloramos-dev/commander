@@ -18,10 +18,9 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/v1/user", "/api/v1/user/login", "/swagger-ui/**", "/v3/**").permitAll()
+                        .requestMatchers("/api/v1/user", "/login/oauth2/code/**", "/api/v1/user/login", "/swagger-ui/**", "/v3/**").permitAll()
                         .anyRequest().authenticated()
-                )
-                .oauth2ResourceServer(httpServer -> httpServer.jwt(Customizer.withDefaults()))
+                ).oauth2Login(auth -> auth.defaultSuccessUrl("http://localhost:3000/", true))
                 .build();
     }
 }

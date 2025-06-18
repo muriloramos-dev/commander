@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -22,17 +24,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody UserCreateDTO userCreateDTO) {
-        this.userService.createUser(userCreateDTO.getUsername(), userCreateDTO.getEmail(), userCreateDTO.getPassword());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
-        String token = this.userService.loginUser(userLoginDTO);
-        if (token != null) {
-            return ResponseEntity.ok().body(token);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        this.userService.createUser(userCreateDTO);
+        URI redirectUri = URI.create("http://localhost:8081/oauth2/authorization/keycloak");
+        return ResponseEntity.status(HttpStatus.FOUND).location(redirectUri).build();
     }
 }
