@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: commander
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope:
+              - repo
+              - read:user
+            redirect-uri: "http://localhost:8081/login/oauth2/code/github"
+            authorization-grant-type: authorization_code
+          keycloak:
+            client-id: ${KEYCLOAK_CLIENT_ID}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: login
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/commander
+            authorization-uri: http://localhost:8080/realms/commander/protocol/openid-connect/auth
+            token-uri: http://localhost:8080/realms/commander/protocol/openid-connect/token
+            user-info-uri: http://localhost:8080/realms/commander/protocol/openid-connect/userinfo
+            jwk-set-uri: http://localhost:8080/realms/commander/protocol/openid-connect/certs
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/commander
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8081
+
+keycloak:
+  server-url: ${KEYCLOAK_URL}
+  realm: ${KEYCLOAK_REALM}
+  client-id: ${KEYCLOAK_CLIENT_ID}
+  client-secret: ${KEYCLOAK_CLIENT_SECRET}
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        security.oauth2.client: DEBUG
+        security.oauth2.core: DEBUG
+        org.springframework.security.oauth2: DEBUG
+        org.springframework.security.authentication: DEBUG

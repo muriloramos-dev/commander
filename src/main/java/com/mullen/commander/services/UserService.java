@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Value("${keycloak.realm}")
-    private String realm;
-
     private final UserRepository userRepository;
 
 

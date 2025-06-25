@@ -18,9 +18,13 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/v1/user", "/login/oauth2/code/**", "/api/v1/user/login", "/swagger-ui/**", "/v3/**").permitAll()
+                        .requestMatchers("/api/v1/user", "/login/oauth2/**", "/api/v1/user/login", "/swagger-ui/**", "/v3/**").permitAll()
                         .anyRequest().authenticated()
-                ).oauth2Login(auth -> auth.defaultSuccessUrl("http://localhost:3000/project", true))
+                ).oauth2Login((auth) -> auth.successHandler(new OAuth2SuccessHandler()).failureHandler((request, response, exception) -> {
+                            response.sendRedirect("http://localhost:3001/error?message=" + exception.getMessage());
+                            exception.printStackTrace();
+                        }
+                ))
                 .build();
     }
 }

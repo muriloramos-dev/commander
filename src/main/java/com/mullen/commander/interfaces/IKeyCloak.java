@@ -33,8 +33,6 @@ public class IKeyCloak {
 
     private final Keycloak keycloak;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
     public IKeyCloak(Keycloak keycloak) {
         this.keycloak = keycloak;
     }
